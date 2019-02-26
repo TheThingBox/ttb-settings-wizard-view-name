@@ -1,0 +1,9 @@
+.name_container {
+  min-width: 400px;
+}
+
+@media (max-width: 600px) {
+  .name_container {
+    min-width: 200px;
+  }
+}
