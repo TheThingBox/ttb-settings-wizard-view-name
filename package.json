@@ -2,7 +2,8 @@
   "name": "ttb-settings-wizard-view-name",
   "version": "0.1.0",
   "description": "A module for the settings wizard route to use for thethingbox",
-  "dependencies": {},
-  "main": "api.js",
-  "private": true
+  "dependencies": {
+    "ttbd-interface-utils": "github:TheThingBox/ttbd-interface-utils#323cbd8"
+  },
+  "main": "api.js"
 }
