@@ -1,7 +1,8 @@
 const bodyParser = require('body-parser');
 const path = require('path')
 const fs = require('fs')
-const interface_utils = require('ttbd-interface-utils')({hydra_exec_host: "mosquitto"})
+const InterfaceUtils = require('ttbd-interface-utils')
+const interface_utils = new InterfaceUtils()
 
 const name = 'name'
 var settingsPath = null
@@ -28,8 +29,24 @@ function init(app, apiToExpose, persistenceDir) {
   });
 
   app.post(apiToExpose, function(req, res){
-    syncStats()
-    res.json(stats)
+    var data = req.body;
+    _hostname = InterfaceUtils.formatHostname(data.hostname)
+    if(_hostname !== "" ){
+      interface_utils.setHostname(_hostname).then( newHostname => {
+        stats.status = 'ok'
+        stats.renamed = true
+        syncStats(true)
+        res.json({message: `The hostname was changed for '${newHostname}'`})
+      }).catch( err => {
+        stats.status = 'nok'
+        syncStats(true)
+        res.status(403).json({message: `The hostname cannot be set`, error: "hostname_not_settable"})
+      })
+    } else {
+      stats.status = 'nok'
+      syncStats(true)
+      res.status(403).json({message: `The hostname '${data.hostname}' is not valid`, error: "hostname_not_valid"})
+    }
   });
 }
 
