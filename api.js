@@ -36,16 +36,16 @@ function init(app, apiToExpose, persistenceDir) {
         stats.status = 'ok'
         stats.renamed = true
         syncStats(true)
-        res.json({message: `The hostname was changed for '${newHostname}'`})
+        res.json({message: 'OK', key: 'answer_name_changed', params: { name: newHostname} })
       }).catch( err => {
         stats.status = 'nok'
         syncStats(true)
-        res.status(403).json({message: `The hostname cannot be set`, error: "hostname_not_settable"})
+        res.json({message: "Error", key: "answer_name_not_set", params: {} })
       })
     } else {
       stats.status = 'nok'
       syncStats(true)
-      res.status(403).json({message: `The hostname '${data.hostname}' is not valid`, error: "hostname_not_valid"})
+      res.json({message: "Error", key: "answer_name_not_valid", params: { name: data.hostname} })
     }
   });
 }

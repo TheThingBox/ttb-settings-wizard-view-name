@@ -5,15 +5,15 @@
       <div class="card-content  ttb-color-dark-grey-text">
         <div class="row">
           <div class="input-field col s12">
-            <input placeholder="<%= hostname %>" id="wizard_<%= views[viewIndex].name %>_form_hostname" type="text" class="validate">
-            <label for="wizard_<%= views[viewIndex].name %>_form_hostname">hostname</label>
+            <input placeholder="<%= hostname %>" id="wizard_<%= name %>_form_hostname" type="text" class="validate">
+            <label for="wizard_<%= name %>_form_hostname"><%= lang('hostname') %></label>
           </div>
         </div>
       </div>
-      <div id="wizard_<%= views[viewIndex].name %>_ignore_wrapper" class="displayable-60 ignore-wrapper tooltiped" data-position="top" data-tooltip="Click to do not ignore this step">
+      <div id="wizard_<%= name %>_ignore_wrapper" class="displayable-60 ignore-wrapper tooltiped" data-position="top" data-tooltip="<%= lang('click_unignore') %>">
       </div>
     </div>
   </form>
 </div>
-<div id="wizard_<%= views[viewIndex].name %>_footer" class="row">
+<div id="wizard_<%= name %>_footer" class="row">
 </div>
