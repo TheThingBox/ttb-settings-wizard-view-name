@@ -1,5 +1,5 @@
 {
-  "name": "Name",
+  "name": "Device name",
   "isok_hostname_title": "Device name",
   "isok_hostname_corpus": "You have to set the device name.",
   "hostname": "Device name",

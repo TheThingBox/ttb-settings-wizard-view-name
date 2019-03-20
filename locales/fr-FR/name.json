@@ -1,5 +1,5 @@
 {
-  "name": "Nom",
+  "name": "Nom de l'appareil",
   "isok_hostname_title": "Nom de l'appareil",
   "isok_hostname_corpus": "Vous devez renseigner le nom de l'appareil.",
   "hostname": "Nom de l'appareil",
