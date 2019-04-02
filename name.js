@@ -31,7 +31,8 @@ var VIEW_NAME = function() {
           document.getElementById(this.main_container_id).innerHTML = _html
 
           this.form = {}
-          this.form.hostname = ''
+          this.form.hostname = params.hostname
+          this.form.ignore = true
           this.form._willShowErrors = null
 
           document.getElementById("wizard_name_form_hostname").addEventListener('input', (e) => { this.nameHostnameChange(e) });
@@ -65,9 +66,11 @@ var VIEW_NAME = function() {
 
   Name.prototype.nameHostnameChange = function(e){
     this.form.hostname = document.getElementById('wizard_name_form_hostname').value
-    if(this.form.hostname !== ''){
+    if(this.form.hostname !== '' && this.form.hostname !== params.hostname){
+      delete this.form.ignore
       WIZARD.requestAlive.setUrl(`http://${this.form.hostname}.local${WIZARD.aliveApi}`)
     } else {
+      this.form.ignore = true
       WIZARD.requestAlive.setUrl(WIZARD.aliveApi)
     }
     this.checkButtonNextStats()
@@ -79,7 +82,7 @@ var VIEW_NAME = function() {
 
   Name.prototype.getResumed = function(){
     var _html = ''
-    if(this.form.ignore || !this.form.hostname){
+    if(this.form.ignore || !this.form.hostname || this.form.hostname === params.hostname){
       _html =  this.lang('resume_not_renamed', { device: params.device })
     } else {
       _html =  this.lang('resume_rename', { device: params.device, hostname: this.form.hostname })
@@ -88,16 +91,15 @@ var VIEW_NAME = function() {
   }
 
   Name.prototype.post = function(){
-    var request = new Request(this.params.api)
-
-    if(!this.isOk()){
-      request.setData({})
+    if(!this.isOk() || this.form.hostname === params.hostname){
+      return new Promise( (resolve, reject) => { resolve(true) })
     } else {
+      var request = new Request(this.params.api)
       request.setData({
         hostname: this.form.hostname
       })
+      return request.post()
     }
-    return request.post()
   }
 
   Name.prototype.loaded = function(){
@@ -112,6 +114,7 @@ var VIEW_NAME = function() {
           document.getElementById("wizard_name_form_hostname").value = params.hostname
         }
         document.getElementById("wizard_name_form_hostname").nextElementSibling.classList.add('active')
+        this.checkButtonNextStats()
         resolve()
       })
     })
@@ -122,9 +125,11 @@ var VIEW_NAME = function() {
   }
 
   Name.prototype.unIgnored = function(){
-    if(this.form.hostname !== ''){
+    if(this.form.hostname !== '' && this.form.hostname !== params.hostname){
+      delete this.form.ignore
       WIZARD.requestAlive.setUrl(`http://${this.form.hostname}.local${WIZARD.aliveApi}`)
     } else {
+      this.form.ignore = true
       WIZARD.requestAlive.setUrl(WIZARD.aliveApi)
     }
   }
