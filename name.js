@@ -110,6 +110,7 @@ var VIEW_NAME = function() {
           flags = JSON.parse(flags)
         } catch(e){}
         if(flags.renamed === true){
+          this.form.ignore = true
           this.form.hostname = params.hostname
           document.getElementById("wizard_name_form_hostname").value = params.hostname
         }
